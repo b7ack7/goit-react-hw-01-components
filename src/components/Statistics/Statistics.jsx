@@ -1,45 +1,32 @@
-import css from './Ststistics.module.css';
-import propTypes from 'prop-types';
+import PropTypes from "prop-types";
+import { StatisticsWrapper, Title, StatList, Item, Label, Percentage } from './Statistics.styled';
 
-const createColor = () => {
-  const color =
-    'rgba(' +
-    Math.round(Math.random() * 255) +
-    ',' +
-    Math.round(Math.random() * 255) +
-    ',' +
-    Math.round(Math.random() * 255) +
-    ',' +
-    0.5 +
-    ')';
 
-  return color;
-};
 
-export const Statistics = ({ title, stats }) => {
-  return (
-    <section className={css.statistics}>
-      {title && <h2 className={css.title}>{title}</h2>}
-
-      <ul className={css.stats__list}>
-        {stats.map(({ id, label, percentage }) => {
-          return (
-            <li
-              className={css.stats}
-              key={id}
-              style={{ backgroundColor: createColor() }}
-            >
-              <span className={css.label}>{label}</span>
-              <span className={css.percentage}>{percentage}</span>
-            </li>
-          );
-        })}
-      </ul>
-    </section>
-  );
+export const Statistics = ({title, stats}) => {
+    return (
+    <StatisticsWrapper>
+        {title && <Title>{title}</Title>}
+        <StatList>
+        {stats.map(({id, label, percentage}) => {
+            return (<Item key={id} length={stats.length}>
+            <Label>{label}</Label>
+            <Percentage>{percentage}%</Percentage>
+            </Item>);
+          })
+          }
+        </StatList>
+    </StatisticsWrapper>
+    );
 };
 
 Statistics.propTypes = {
-  label: propTypes.string.isRequired,
-  percentage: propTypes.number.isRequired,
+    title: PropTypes.string,
+    stats: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            label: PropTypes.string.isRequired,
+            percentage: PropTypes.number.isRequired
+        })
+    )
 };
